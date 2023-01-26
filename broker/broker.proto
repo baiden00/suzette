@@ -1,0 +1,107 @@
+syntax = "proto3";
+
+option go_package = "baiden.xyz";
+
+import "google/protobuf/any.proto";
+package broker;
+
+// Publish Request Messages
+
+message HealthCheckRequest {
+  string status = 1;
+}
+
+message HealthCheckResponse {
+  string status = 1;
+}
+message Message {
+  string message_id = 1;
+  google.protobuf.Any message_value = 2;
+}
+
+message ClearTopicRequest {
+  string publisher_id = 1;
+  Message message = 2;
+}
+
+message PublishRequest {
+  string publisher_id = 1;
+  Message message = 2;
+}
+
+message CreateTopicRequest {
+  string publisher_id = 1;
+  Message message = 2;
+}
+
+message BatchPublishRequest {
+  string publisher_id = 1;
+  Message message = 2;
+}
+
+// Subscribe Request Messages
+message StartConsumeRequest {
+  string publisher_id = 1;
+  Message message = 2;
+}
+
+message CreateSubscriptionRequest {
+  string subscriber_id = 1;
+  string topic_id = 2;
+}
+
+message CreateNotifyRequest {
+  string publisher_id = 1;
+  string message_id = 2;
+  string subscriber_id = 3;
+}
+
+// Publish Response Messages
+message ClearTopicResponse {
+  string response = 1;
+}
+
+message CreateTopicResponse {
+  string response = 1;
+}
+
+message BatchPublishResponse {
+  string response = 1;
+}
+
+message PublishResponse {
+  string response = 1;
+}
+
+// Subscriber Response Messages
+message StartConsumeResponse {
+  string response = 1;
+}
+
+message CreateSubscriptionResponse {
+  string response = 1;
+}
+
+message CreateNotifyResponse {
+  string response = 1;
+}
+
+
+
+// Broker gRPC Service
+service Broker {
+  // Publisher RPCs
+  rpc Publish       (PublishRequest)      returns (PublishResponse)      {}
+  rpc CreateTopic   (CreateTopicRequest)  returns (CreateTopicResponse)  {}
+  rpc ClearTopic    (ClearTopicRequest)   returns (ClearTopicResponse)   {}
+  rpc BatchPublish  (stream BatchPublishRequest) returns (BatchPublishResponse) {}
+  rpc HealthCheck   (HealthCheckRequest)    returns (HealthCheckResponse) {}
+
+
+  // Subscriber RPCs
+  rpc StartConsume         (StartConsumeRequest)        returns (stream StartConsumeResponse)      {}
+  rpc CreateSubscription   (CreateSubscriptionRequest)  returns (CreateSubscriptionResponse)  {}
+  rpc Notify               (CreateNotifyRequest)        returns (CreateNotifyResponse)   {}
+
+
+}
