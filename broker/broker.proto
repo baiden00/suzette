@@ -14,6 +14,7 @@ message HealthCheckRequest {
 message HealthCheckResponse {
   string status = 1;
 }
+
 message Message {
   string message_id = 1;
   google.protobuf.Any message_value = 2;
@@ -26,12 +27,15 @@ message ClearTopicRequest {
 
 message PublishRequest {
   string publisher_id = 1;
+  string topic_id = 3;
   Message message = 2;
 }
 
 message CreateTopicRequest {
   string publisher_id = 1;
-  Message message = 2;
+  string topic_id = 2;
+  string topic_name = 3;
+  string topic_url = 4;
 }
 
 message BatchPublishRequest {

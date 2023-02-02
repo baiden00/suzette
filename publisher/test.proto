@@ -1,0 +1,11 @@
+syntax = "proto3";
+
+option go_package = "baiden.xyz";
+
+import "google/protobuf/any.proto";
+package publisher;
+
+message TestMessage {
+  string message_id = 2;
+  int32 num = 1;
+}
